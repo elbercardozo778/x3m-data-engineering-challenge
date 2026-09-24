@@ -1,0 +1,131 @@
+version: 2
+
+models:
+  - name: stg_products
+    description: Catálogo tipado por día. Una fila por producto y `snapshot_date`.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [snapshot_date, product_id]
+    columns:
+      - name: snapshot_date
+        description: Fecha del snapshot.
+        data_type: date
+      - name: product_id
+        description: Id del producto.
+        data_type: integer
+        data_tests: [not_null]
+      - name: product_title
+        description: Nombre del producto ese día.
+        data_type: text
+        data_tests: [not_null]
+      - name: category
+        description: Categoría del producto.
+        data_type: text
+      - name: brand
+        description: Marca. Casi la mitad del catálogo no la tiene.
+        data_type: text
+      - name: price
+        description: Precio de lista.
+        data_type: numeric
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+      - name: discount_percentage
+        description: Descuento en porcentaje (0 a 100).
+        data_type: numeric
+      - name: stock
+        description: Unidades en stock.
+        data_type: integer
+
+  - name: stg_carts
+    description: Carritos tipados por día, con sus totales. Una fila por carrito y `snapshot_date`.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [snapshot_date, cart_id]
+    columns:
+      - name: snapshot_date
+        description: Fecha del snapshot.
+        data_type: date
+      - name: cart_id
+        description: Id del carrito.
+        data_type: integer
+        data_tests: [not_null]
+      - name: user_id
+        description: Usuario dueño del carrito.
+        data_type: integer
+      - name: total_products
+        description: Cantidad de líneas del carrito.
+        data_type: integer
+      - name: total_quantity
+        description: Unidades totales del carrito.
+        data_type: integer
+      - name: gross_total
+        description: Total sin descuentos (`total` de la API).
+        data_type: numeric
+      - name: net_total
+        description: Total con descuentos (`discountedTotal` de la API).
+        data_type: numeric
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+  - name: stg_cart_lines
+    description: Una fila por línea de carrito y día. Un carrito puede repetir el mismo producto en varias líneas.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [snapshot_date, cart_id, line_number]
+    columns:
+      - name: snapshot_date
+        description: Fecha del snapshot.
+        data_type: date
+      - name: cart_id
+        description: Id del carrito.
+        data_type: integer
+      - name: line_number
+        description: Posición de la línea dentro del carrito (desde 1).
+        data_type: integer
+      - name: product_id
+        description: Producto vendido en la línea.
+        data_type: integer
+        data_tests: [not_null]
+      - name: product_title
+        description: Nombre del producto según el carrito.
+        data_type: text
+      - name: unit_price
+        description: Precio unitario.
+        data_type: numeric
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+      - name: quantity
+        description: Unidades vendidas en la línea.
+        data_type: integer
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: false
+      - name: discount_percentage
+        description: Descuento aplicado, en porcentaje.
+        data_type: numeric
+      - name: gross_amount
+        description: Precio × cantidad, sin descuento.
+        data_type: numeric
+      - name: net_amount
+        description: Monto cobrado, con descuento.
+        data_type: numeric
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0

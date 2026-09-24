@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: product_daily_revenue
+    description: Revenue vendido por producto y fecha. Solo tienen fila los productos con al menos una venta ese día.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [date, product_id]
+    columns:
+      - name: product_id
+        description: Id del producto.
+        data_type: integer
+        data_tests: [not_null]
+      - name: product_title
+        description: Nombre del producto según el catálogo del mismo día.
+        data_type: text
+        data_tests: [not_null]
+      - name: date
+        description: Fecha del snapshot de ventas.
+        data_type: date
+        data_tests: [not_null]
+      - name: units_sold
+        description: Unidades vendidas en el día.
+        data_type: bigint
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: false
+      - name: revenue
+        description: Revenue neto de descuentos (suma de `discountedTotal`).
+        data_type: numeric
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+      - name: gross_revenue
+        description: Revenue bruto (precio × cantidad).
+        data_type: numeric
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+      - name: carts_count
+        description: Carritos distintos que incluyeron el producto.
+        data_type: bigint

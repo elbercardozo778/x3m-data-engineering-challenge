@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "title": "Essence Mascara Lash Princess",
+    "category": "beauty",
+    "price": 9.99,
+    "discountPercentage": 10.48,
+    "rating": 2.56,
+    "stock": 99,
+    "brand": "Essence",
+    "availabilityStatus": "In Stock"
+  },
+  {
+    "id": 2,
+    "title": "Eyeshadow Palette with Mirror",
+    "category": "beauty",
+    "price": 19.99,
+    "discountPercentage": 18.19,
+    "rating": 2.86,
+    "stock": 34,
+    "brand": "Glamour Beauty",
+    "availabilityStatus": "In Stock"
+  },
+  {
+    "id": 3,
+    "title": "Powder Canister",
+    "category": "beauty",
+    "price": 14.99,
+    "discountPercentage": 9.84,
+    "rating": 4.64,
+    "stock": 89,
+    "brand": "Velvet Touch",
+    "availabilityStatus": "In Stock"
+  }
+]

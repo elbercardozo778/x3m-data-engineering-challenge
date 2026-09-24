@@ -1,0 +1,35 @@
+{
+  "products": {
+    "file_accuracy": 1.0,
+    "rules": [
+      {"rule": "not_empty"},
+      {"rule": "count_matches_total"},
+      {"rule": "unique", "field": "id"},
+      {"rule": "type", "field": "id", "type": "int"},
+      {"rule": "not_null", "field": "title"},
+      {"rule": "not_null", "field": "category"},
+      {"rule": "range", "field": "price", "min": 0},
+      {"rule": "range", "field": "discountPercentage", "min": 0, "max": 100},
+      {"rule": "range", "field": "stock", "min": 0},
+      {"rule": "range", "field": "rating", "min": 0, "max": 5},
+      {"rule": "accepted_values", "field": "availabilityStatus", "values": ["In Stock", "Low Stock", "Out of Stock"]},
+      {"rule": "not_null", "field": "brand", "rule_accuracy": 0.4}
+    ]
+  },
+  "carts": {
+    "file_accuracy": 1.0,
+    "rules": [
+      {"rule": "not_empty"},
+      {"rule": "count_matches_total"},
+      {"rule": "unique", "field": "id"},
+      {"rule": "type", "field": "id", "type": "int"},
+      {"rule": "type", "field": "userId", "type": "int"},
+      {"rule": "not_empty_list", "field": "products"},
+      {"rule": "type", "field": "products[].id", "type": "int"},
+      {"rule": "range", "field": "products[].quantity", "min": 1},
+      {"rule": "range", "field": "products[].price", "min": 0},
+      {"rule": "range", "field": "products[].discountPercentage", "min": 0, "max": 100},
+      {"rule": "range", "field": "discountedTotal", "min": 0}
+    ]
+  }
+}

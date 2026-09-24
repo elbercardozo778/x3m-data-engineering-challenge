@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+.env
+logs/
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+.DS_Store

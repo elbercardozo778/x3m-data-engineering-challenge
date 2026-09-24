@@ -1,0 +1,28 @@
+[sqlfluff]
+dialect = postgres
+# Templater jinja con los builtins de dbt: lintea los modelos sin instalar dbt ni conectarse a la base.
+templater = jinja
+max_line_length = 120
+
+[sqlfluff:templater:jinja]
+apply_dbt_builtins = True
+load_macros_from_path = dbt/macros
+
+[sqlfluff:templater:jinja:context]
+snapshot_date = 2026-01-01
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.literals]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.types]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:references.keywords]
+# `date` es un nombre de columna que pide el enunciado; el resto son claros en su contexto.
+ignore_words = date,line,resource,rule,checked
